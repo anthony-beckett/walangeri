@@ -21,12 +21,18 @@ export const styles = StyleSheet.create({
     },
     input: {
         flex: 1, // Allow TextInput to expand to fill remaining space
-
+        maxHeight: 100,
         borderWidth: 1,
         borderColor: 'gray',
         padding: 5,
     },
     title: {
         textAlign: 'center',
+    },
+    dropdown: {
+        maxWidth: "65%",
+    },
+    button: {
+        margin: 5,
     },
 });

@@ -36,3 +36,4 @@ yarn-error.*
 
 # IDE stuff
 .idea/
+qodana.yaml

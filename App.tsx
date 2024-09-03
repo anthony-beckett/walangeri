@@ -29,7 +29,7 @@ const MainMenuView = (mainmenu: any) => {
   return (
       <SafeAreaView style={styles.container}>
         <View style={styles.button}>
-          <Button  title={"New report"}    onPress={() => onPress('NewReport')} />
+          <Button  title={"New report"}   onPress={() => onPress('NewReport')} />
         </View>
 
         <View style={styles.button}>

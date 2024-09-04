@@ -11,19 +11,28 @@ export class NewReport extends React.Component {
         this.state = {
             reportName   : "",
             addressLot   : "",
-            jobType      : "",
+            // Job Type picker options begin
+            jtOpen  : false,
+            jtItems : [
+                { label: "Carpentry",    value: "carpentry" },
+                { label: "Electrician", value: "electrician" },
+                { label: "Plumbing",   value: "plumbing" },
+            ],
+            jtValue : null,
+            // end
             // Urgency level picker options begin
-            open  : false,
-            items : [
+            ulOpen  : false,
+            ulItems : [
                 { label: "Low",    value: "low" },
                 { label: "Medium", value: "medium" },
                 { label: "High",   value: "high" },
             ],
-            value : null,
+            ulValue : null,
             // end
             notes : "",
         };
-        this.setValue = this.setValue.bind(this);
+        this.setValue     = this.setValue.bind(this);
+        this.setOpen      = this.setOpen.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.clearAll     = this.clearAll.bind(this);
         this.submit       = this.submit.bind(this);
@@ -33,6 +42,25 @@ export class NewReport extends React.Component {
         this.setState(state => ({
             [property]: callback(state[property])
         }));
+    }
+
+    setOpen(open: string, val: any): void {
+        const condition = new RegExp(".*Open$");
+
+        // Open selected dropdownpicker
+        this.setState({ [open]: val });
+
+        // Close all other dropdownpickers
+        Object.keys(this.state).forEach(key => {
+            // Only close if: key matches regex (aka is a picker),
+            // the picker isn't the picker you're opening, and
+            // any other picker is actually open
+            if (condition.test(key)
+                && key !== open
+                && this.state[key]) {
+                this.setState({ [key]: false })
+            }
+        });
     }
 
     handleChange = (name: string, value: any) => {
@@ -46,7 +74,7 @@ export class NewReport extends React.Component {
 
     protected clearAll(): void {
         Object.keys(this.state).forEach(key => {
-            if (key !== "items") {
+            if ((typeof this.state[key]) !== "object") {
                 this.setState({ [key]: "" }); // Reset all properties to empty strings
             }
         });
@@ -84,22 +112,42 @@ export class NewReport extends React.Component {
                     />
                 </SafeAreaView>
 
-                <SafeAreaView style={styles.innerContainer}>
+                <View style={styles.innerContainer}>
+                    <Text style={styles.label}>Job type:</Text>
+                    <DropDownPicker
+                        style={styles.dropdown}
+                        closeAfterSelecting={true}
+                        showTickIcon={true}
+                        placeholder={"Choose a job type..."}
+                        value={this.state.jtValue}
+                        items={this.state.jtItems}
+                        open={this.state.jtOpen}
+                        setValue={ (val) => this.setValue("jtValue", val) }
+                        setOpen = { (val) =>
+                            this.setOpen("jtOpen", val)
+                        }
+                        setItems = { (val) =>
+                            this.handleChange("jtItems", val)
+                        }
+                    />
+                </View>
+
+                <View style={styles.innerContainer}>
                     <Text style={styles.label}>Urgency Level:</Text>
                     <DropDownPicker
                         style={styles.dropdown}
                         closeAfterSelecting={true}
                         showTickIcon={true}
-                        placeholder={"Choose an urgency level"}
-                        value={this.state.value}
-                        items={this.state.items}
-                        open={this.state.open}
-                        setValue={(value) => this.setValue("value", value)}
+                        placeholder={"Choose an urgency level..."}
+                        value={this.state.ulValue}
+                        items={this.state.ulItems}
+                        open={this.state.ulOpen}
+                        setValue={(val) => this.setValue("ulValue", val)}
                         setOpen = { (val) =>
-                            this.handleChange("open", val)
+                            this.setOpen("ulOpen", val)
                         }
                         setItems = { (val) =>
-                            this.handleChange("items", val)
+                            this.handleChange("ulItems", val)
                         }
                         mode={"BADGE"}
                         showBadgeDot={true}
@@ -109,7 +157,7 @@ export class NewReport extends React.Component {
                             "#FF0000", // Red
                         ]}
                     />
-                </SafeAreaView>
+                </View>
 
                 <SafeAreaView style={styles.innerContainer}>
                     <Text style={styles.label}>Notes:</Text>

@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         maxWidth: "70%",
-        alignItems: 'center', // Optional: Align items vertically
+        alignItems: 'center',
         padding: 10,
     },
     label: {
@@ -20,7 +20,7 @@ export const styles = StyleSheet.create({
         padding: 10,
     },
     input: {
-        flex: 1, // Allow TextInput to expand to fill remaining space
+        flex: 1,
         maxHeight: 100,
         borderWidth: 1,
         borderColor: 'gray',

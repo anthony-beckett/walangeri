@@ -112,7 +112,7 @@ export class NewReport extends React.Component {
                     />
                 </SafeAreaView>
 
-                <View style={styles.innerContainer}>
+                <View style={[styles.innerContainer, { zIndex: 3000 }]}>
                     <Text style={styles.label}>Job type:</Text>
                     <DropDownPicker
                         style={styles.dropdown}
@@ -123,16 +123,12 @@ export class NewReport extends React.Component {
                         items={this.state.jtItems}
                         open={this.state.jtOpen}
                         setValue={ (val) => this.setValue("jtValue", val) }
-                        setOpen = { (val) =>
-                            this.setOpen("jtOpen", val)
-                        }
-                        setItems = { (val) =>
-                            this.handleChange("jtItems", val)
-                        }
+                        setOpen = { (val) => this.setOpen("jtOpen", val) }
+                        setItems = { (val) => this.handleChange("jtItems", val) }
                     />
                 </View>
 
-                <View style={styles.innerContainer}>
+                <View style={[styles.innerContainer, { zIndex: 2000 }]}>
                     <Text style={styles.label}>Urgency Level:</Text>
                     <DropDownPicker
                         style={styles.dropdown}
@@ -143,19 +139,11 @@ export class NewReport extends React.Component {
                         items={this.state.ulItems}
                         open={this.state.ulOpen}
                         setValue={(val) => this.setValue("ulValue", val)}
-                        setOpen = { (val) =>
-                            this.setOpen("ulOpen", val)
-                        }
-                        setItems = { (val) =>
-                            this.handleChange("ulItems", val)
-                        }
+                        setOpen = { (val) => this.setOpen("ulOpen", val) }
+                        setItems = { (val) => this.handleChange("ulItems", val) }
                         mode={"BADGE"}
                         showBadgeDot={true}
-                        badgeDotColors = {[
-                            "#CFB407", // Yellow
-                            "#FF8400", // Orange
-                            "#FF0000", // Red
-                        ]}
+                        badgeDotColors={["#CFB407", "#FF8400", "#FF0000"]}
                     />
                 </View>
 

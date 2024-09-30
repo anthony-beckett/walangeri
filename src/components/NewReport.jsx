@@ -3,6 +3,7 @@ import { View, TextInput, Pressable, Text, StyleSheet } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+import Footer from './Footer';
 import theme from '../theme';
 
 // Validation Schema using Yup
@@ -130,6 +131,8 @@ const NewReport = () => {
       <Pressable style={styles.button} onPress={formik.handleSubmit}>
         <Text style={styles.buttonText}>Submit</Text>
       </Pressable>
+
+      <Footer />
     </View>
   );
 };

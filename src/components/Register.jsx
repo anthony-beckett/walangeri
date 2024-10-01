@@ -1,13 +1,11 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import { View, TextInput, Pressable, Text, StyleSheet } from 'react-native';
 import { useFormik } from 'formik';
-import { useLocation } from 'react-router-native'
-import SuccessMessage from './SuccessMessage'
 import * as yup from 'yup';
-import { useNavigate } from 'react-router-native';
 import theme from '../theme';
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import { useNavigate } from 'react-router-native'
 import app from '../../firebaseConfig';
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth"
 
 const validationSchema = yup.object().shape({
   email: yup
@@ -19,51 +17,34 @@ const validationSchema = yup.object().shape({
     .required('Password is required'),
 });
 
-const SignIn = ({ setUser }) => {
-  const navigate = useNavigate();
-  const location = useLocation()
-  const initialSuccessMessage = location.state?.successMessage || null
-  const [successMessage, setSuccessMessage] = useState(initialSuccessMessage)
+const Register = () => {
   const auth = getAuth(app)
-
-  useEffect(() => {
-    if (successMessage) {
-      const timer = setTimeout(() => {
-        setSuccessMessage(null);
-      }, 10000);
-
-      return () => clearTimeout(timer);
-    }
-  }, [successMessage]);
-
+  const navigate = useNavigate()
   const formik = useFormik({
     initialValues: { email: '', password: '' },
     validationSchema,
-    onSubmit: async (values, { setSubmitting, setErrors}) => {
-      console.log('Login:', values);
-      try {
-        const userCredential = await signInWithEmailAndPassword(auth, values.email, values.password)
-        setUser(userCredential)
-        navigate('/', { state: { loginMessage: 'Successfully logged in! Now, create, load or export a report.' } })
-      } catch (error) {
-        if (error.code === 'auth/wrong-password') {
-            setErrors({ password: 'Incorrect password. Please try again.' });
-          } else if (error.code === 'auth/user-not-found') {
-            setErrors({ email: 'No user found with this email address.' });
-          } else {
-            setErrors({ email: 'Login failed. Please try again later.' });
-          }
-      } finally {
-        setSubmitting(false)
-      }
+    onSubmit: async (values, { setSubmitting, setErrors }) => {
+        try {
+            await createUserWithEmailAndPassword(auth, values.email, values.password)
+            navigate('/signin', { state: { successMessage: 'Successfully registered! Now, please sign in.' } })
+        } catch(error) {
+            if (error.code === 'auth/email-already-in-use') {
+                setErrors({ email: 'This email address is already in use.' });
+            } else if (error.code === 'auth/weak-password') {
+                setErrors({ password: 'Password is too weak.' });
+            } else {
+                setErrors({ email: 'Something went wrong. Please try again.' });
+            }
+        } finally {
+            setSubmitting(false)
+        }
     },
   });
 
   return (
     <View style={styles.container}>
       {/* Heading */}
-      <Text style={styles.heading}>Sign into the Walangeri app</Text>
-      <SuccessMessage message={successMessage} />
+      <Text style={styles.heading}>Register for Walangeri App</Text>
 
       {/* Email Input */}
       <TextInput
@@ -97,17 +78,9 @@ const SignIn = ({ setUser }) => {
         <Text style={styles.errorText}>{formik.errors.password}</Text>
       )}
 
-      {/* Login Button */}
-      <Pressable style={styles.loginButton} onPress={formik.handleSubmit}>
-        <Text style={styles.buttonText}>Login</Text>
-      </Pressable>
-
-      {/* Signup Button */}
-      <Pressable
-        style={styles.signupButton}
-        onPress={() => navigate('/register')}
-      >
-        <Text style={styles.signupText}>Sign up</Text>
+      {/* Register Button */}
+      <Pressable style={styles.registerButton} onPress={formik.handleSubmit}>
+        <Text style={styles.buttonText}>Register</Text>
       </Pressable>
     </View>
   );
@@ -141,29 +114,17 @@ const styles = StyleSheet.create({
     color: 'red',
     marginBottom: 15,
   },
-  loginButton: {
+  registerButton: {
     backgroundColor: theme.colors.primary,
     padding: 15,
     borderRadius: 5,
     alignItems: 'center',
     marginTop: 20,
   },
-  signupButton: {
-    padding: 15,
-    borderRadius: 5,
-    alignItems: 'center',
-    marginTop: 10,
-    borderColor: theme.colors.primary,
-    borderWidth: 1,
-  },
   buttonText: {
     color: 'white',
     fontWeight: 'bold',
   },
-  signupText: {
-    color: theme.colors.primary,
-    fontWeight: 'bold',
-  },
 });
 
-export default SignIn;
+export default Register;

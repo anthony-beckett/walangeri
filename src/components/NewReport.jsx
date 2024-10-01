@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, TextInput, Pressable, Text, StyleSheet } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import Footer from './Footer';
 import theme from '../theme';
+import { useLocation } from 'react-router-native'
+import SuccessMessage from './SuccessMessage'
 
 // Validation Schema using Yup
 const validationSchema = yup.object().shape({
@@ -23,7 +25,20 @@ const validationSchema = yup.object().shape({
 });
 
 const NewReport = () => {
+  const location = useLocation()
+  const loginSuccessMessage = location.state?.loginMessage || null
+  const [loginMessage, setLoginMessage] = useState(loginSuccessMessage)
   const [successMessage, setSuccessMessage] = useState(null);
+
+  useEffect(() => {
+    if (loginMessage) {
+      const timer = setTimeout(() => {
+        setLoginMessage(null);
+      }, 7000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [loginMessage]);
 
   // Formik setup
   const formik = useFormik({
@@ -39,18 +54,15 @@ const NewReport = () => {
       console.log(values);
       setSuccessMessage('Success');
       resetForm();
-      setTimeout(() => setSuccessMessage(null), 3000); // Remove success message after 3 seconds
+      setTimeout(() => setSuccessMessage(null), 3000);
     },
   });
 
   return (
     <View style={styles.container}>
       {/* Success Message */}
-      {successMessage && (
-        <View style={styles.successMessage}>
-          <Text style={styles.successText}>{successMessage}</Text>
-        </View>
-      )}
+      <SuccessMessage message={successMessage} />
+      <SuccessMessage message={loginMessage} />
 
       {/* Form Heading */}
       <Text style={styles.heading}>Report a New Fault</Text>
@@ -190,17 +202,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonText: {
-    color: 'white',
-    fontWeight: 'bold',
-  },
-  successMessage: {
-    backgroundColor: 'green',
-    padding: 10,
-    marginBottom: 15,
-    borderRadius: 5,
-    alignItems: 'center',
-  },
-  successText: {
     color: 'white',
     fontWeight: 'bold',
   },

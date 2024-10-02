@@ -2,11 +2,11 @@
   "reports": [
     {
       "id": "1",
-      "reportName": "Fault at Yarralin EDITED",
+      "reportName": "Fault at Yarralin EDITED 2",
       "addressLot": "25",
-      "jobType": "Electrician",
-      "urgencyLevel": "Low",
-      "notes": "I edited this note."
+      "jobType": "Carpentry",
+      "urgencyLevel": "Medium",
+      "notes": "I edited this note twice"
     },
     {
       "id": "2",
@@ -55,6 +55,22 @@
       "jobType": "Plumbing",
       "urgencyLevel": "Low",
       "notes": "just to suffer"
+    },
+    {
+      "id": "8",
+      "reportName": "another report",
+      "addressLot": "lets see",
+      "jobType": "Electrician",
+      "urgencyLevel": "Low",
+      "notes": "if this works"
+    },
+    {
+      "id": "9",
+      "reportName": "testing new report again edited",
+      "addressLot": "asd edited",
+      "jobType": "Electrician",
+      "urgencyLevel": "Medium",
+      "notes": "asd edited"
     }
   ]
 }

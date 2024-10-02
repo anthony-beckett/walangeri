@@ -4,8 +4,8 @@ import { useFormik } from 'formik';
 import { editReportStyles } from '../styles/editReportStyles';
 import RNPickerSelect from 'react-native-picker-select';
 import { useLocation, useNavigate } from 'react-router-native';
-import axios from 'axios';
 import * as yup from 'yup';
+import reportService from '../services/reports'
 
 const validationSchema = yup.object().shape({
     reportName: yup.string().required('Report name is required'),
@@ -34,10 +34,10 @@ const EditReport = ({ reports, setReports }) => {
                 ...values,
             };
 
-            axios
-                .put(`http://192.168.1.7:3001/reports/${report.id}`, updatedReport)
-                .then((response) => {
-                    setReports(reports.map((r) => (r.id !== report.id ? r : response.data)))
+            reportService
+                .update(report.id, updatedReport)
+                .then(returnedReport => {
+                    setReports(reports.map((r) => (r.id !== report.id ? r : returnedReport)))
                     navigate('/allreports')
                 })
                 .catch((error) => {

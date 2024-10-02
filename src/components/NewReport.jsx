@@ -7,7 +7,7 @@ import RNPickerSelect from 'react-native-picker-select';
 import Footer from './Footer';
 import Notification from './Notification';
 import { useLocation } from 'react-router-native';
-import axios from 'axios';
+import reportService from '../services/reports'
 
 const validationSchema = yup.object().shape({
     reportName: yup
@@ -54,11 +54,14 @@ const NewReport = ({ reports, setReports }) => {
             urgencyLevel: values.urgencyLevel,
             notes: values.notes
           }
-          axios
-            .post('http://192.168.1.7:3001/reports', reportObject)
-            .then(response => {
-                console.log(response)
-                setReports(reports.concat(response.data))
+          reportService
+            .create(reportObject)
+            .then(returnedReport => {
+                console.log(returnedReport)
+                setReports(reports.concat(returnedReport))
+            })
+            .catch(error => {
+                console.log(error)
             })
 
           setNotificationMessage('Report successfully submitted!');

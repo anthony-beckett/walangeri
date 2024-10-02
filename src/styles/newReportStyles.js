@@ -38,22 +38,3 @@ export const newReportStyles = StyleSheet.create({
       fontWeight: 'bold',
     },
 });
-
-export const pickerSelectStyles = StyleSheet.create({
-    inputIOS: {
-      borderWidth: 1,
-      borderColor: '#ccc',
-      padding: 10,
-      marginBottom: 15,
-      borderRadius: 5,
-      color: '#000',
-    },
-    inputAndroid: {
-      borderWidth: 1,
-      borderColor: '#ccc',
-      padding: 10,
-      marginBottom: 15,
-      borderRadius: 5,
-      color: '#000',
-    },
-});

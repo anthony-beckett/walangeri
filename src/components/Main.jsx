@@ -1,27 +1,29 @@
-import { View } from 'react-native'
+import { View } from 'react-native';
 import { Route, Routes, Navigate } from 'react-router-native';
-import mainStyle from '../styles/mainStyle'
-import AppBar from './AppBar'
-import NewReport from './NewReport'
+import mainStyle from '../styles/mainStyle';
+import AppBar from './AppBar';
+import NewReport from './NewReport';
 import LoadReport from './LoadReport';
 import ExportReport from './ExportReport';
 import SignIn from './SignIn';
 import AllReports from './AllReports';
+import EditReport from './EditReport'; // Import EditReport
 
-const Main = () => {
+const Main = ({ reports, setReports }) => {
     return (
         <View style={mainStyle.container}>
             <AppBar />
             <Routes>
-                <Route path="/" element={<NewReport />} />
+                <Route path="/" element={<NewReport setReports={setReports} reports={reports} />} />
                 <Route path="/loadreport" element={<LoadReport />} />
                 <Route path="/exportreport" element={<ExportReport />} />
-                <Route path="/allreports" element={<AllReports />} />
+                <Route path="/allreports" element={<AllReports reports={reports} />} />
                 <Route path="/signin" element={<SignIn />} />
+                <Route path="/editreport/:id" element={<EditReport reports={reports} setReports={setReports} />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
         </View>
-    )
-}
+    );
+};
 
-export default Main
+export default Main;

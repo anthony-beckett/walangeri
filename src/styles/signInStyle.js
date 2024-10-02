@@ -54,4 +54,4 @@ const signInStyle = StyleSheet.create({
     },
 });
 
-export default signInStyle
+export default signInStyle;

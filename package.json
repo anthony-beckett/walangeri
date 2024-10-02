@@ -6,10 +6,12 @@
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "server": "json-server -p3001 --watch db.json"
   },
   "dependencies": {
     "@expo/metro-runtime": "~3.1.1",
+    "axios": "^1.7.7",
     "expo": "~50.0.17",
     "expo-status-bar": "~1.11.1",
     "formik": "^2.4.6",
@@ -22,7 +24,8 @@
     "yup": "^1.4.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.0"
+    "@babel/core": "^7.20.0",
+    "json-server": "^1.0.0-beta.3"
   },
   "private": true
 }

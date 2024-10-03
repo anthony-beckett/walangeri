@@ -5,15 +5,14 @@ import Main from './src/components/Main';
 import reportService from './src/services/reports'
 
 const App = () => {
-  const [reports, setReports] = useState([]); // Initialize state
+  const [reports, setReports] = useState([])
 
   useEffect(() => {
-    // Fetch data when the component mounts
     reportService
       .getAll()
       .then(initialReports => {
         console.log('promise fulfilled')
-        setReports(initialReports); // Store the fetched data in state
+        setReports(initialReports);
       })
       .catch(error => {
         console.error('Error fetching reports:', error);

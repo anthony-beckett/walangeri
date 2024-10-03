@@ -4,9 +4,10 @@ import signInStyle from '../styles/signInStyle';
 import { useFormik } from 'formik';
 import { useNavigate } from 'react-router-native';
 import React from 'react';
+import loginService from '../services/login'
 
 const validationSchema = yup.object().shape({
-    email: yup
+    username: yup
       .string()
       .email('Invalid email address')
       .required('Email is required'),
@@ -15,14 +16,22 @@ const validationSchema = yup.object().shape({
       .required('Password is required'),
 });
 
-const SignIn = () => {
+const SignIn = ({setUser}) => {
     const navigate = useNavigate();
 
     const formik = useFormik({
-        initialValues: { email: '', password: '' },
+        initialValues: { username: '', password: '' },
         validationSchema,
-        onSubmit: values => {
-          console.log('Login:', values);
+        onSubmit: async (values) => {
+          try {
+            const tryLogin = await loginService.login({
+                username: values.username,
+                password: values.password
+            })
+            setUser(tryLogin)
+          } catch(exception) {
+            console.log(exception)
+          }
           navigate('/', { state: { notificationMessage: 'Signed in! Now, use the Walangeri app\'s reporting functionality' } });
         },
     });
@@ -32,15 +41,15 @@ const SignIn = () => {
             <Text style={signInStyle.heading}>Sign into the Walangeri app</Text>
 
             <TextInput
-                style={[signInStyle.input, formik.touched.email && formik.errors.email ? signInStyle.inputError : null]}
+                style={[signInStyle.input, formik.touched.username && formik.errors.username ? signInStyle.inputError : null]}
                 placeholder="Email"
-                onChangeText={formik.handleChange('email')}
-                onBlur={formik.handleBlur('email')}
-                value={formik.values.email}
+                onChangeText={formik.handleChange('username')}
+                onBlur={formik.handleBlur('username')}
+                value={formik.values.username}
                 keyboardType="email-address"
             />
-            {formik.touched.email && formik.errors.email && (
-                <Text style={signInStyle.errorText}>{formik.errors.email}</Text>
+            {formik.touched.username && formik.errors.username && (
+                <Text style={signInStyle.errorText}>{formik.errors.username}</Text>
             )}
 
             <TextInput

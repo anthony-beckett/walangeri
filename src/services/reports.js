@@ -1,5 +1,5 @@
 import axios from 'axios'
-const baseUrl= 'http://192.168.1.7:3001/reports'
+const baseUrl= 'http://192.168.1.7:3001/api/reports'
 
 const getAll = () => {
     const request = axios.get(baseUrl)
@@ -19,8 +19,14 @@ const update = (id, newObject) => {
     return request.then(response => response.data)
 }
 
+const deleteReport = (id) => {
+    const request = axios.delete(`${baseUrl}/${id}`);
+    return request.then(response => response.data);
+}
+
 export default {
     getAll,
     create,
-    update
+    update,
+    deleteReport
 }

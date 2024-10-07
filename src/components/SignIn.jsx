@@ -29,6 +29,7 @@ const SignIn = ({setUser}) => {
                 password: values.password
             })
             setUser(tryLogin)
+            console.log(tryLogin)
           } catch(exception) {
             console.log(exception)
           }

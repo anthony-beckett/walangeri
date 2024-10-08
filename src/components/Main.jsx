@@ -12,6 +12,7 @@ import EditReport from './EditReport'; // Import EditReport
 
 const Main = ({ reports, setReports }) => {
     const [user, setUser] = useState(null)
+
     return (
         <View style={mainStyle.container}>
             <AppBar />

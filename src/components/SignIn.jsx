@@ -4,7 +4,10 @@ import signInStyle from '../styles/signInStyle';
 import { useFormik } from 'formik';
 import { useNavigate } from 'react-router-native';
 import React from 'react';
+import { useState } from 'react';
 import loginService from '../services/login'
+import Notification from './Notification';
+import reportService from '../services/reports'
 
 const validationSchema = yup.object().shape({
     username: yup
@@ -18,6 +21,7 @@ const validationSchema = yup.object().shape({
 
 const SignIn = ({setUser}) => {
     const navigate = useNavigate();
+    const [errorMessage, setErrorMessage] = useState('')
 
     const formik = useFormik({
         initialValues: { username: '', password: '' },
@@ -28,19 +32,22 @@ const SignIn = ({setUser}) => {
                 username: values.username,
                 password: values.password
             })
+            reportService.setToken(tryLogin.token)
             setUser(tryLogin)
             console.log(tryLogin)
+            navigate('/', { state: { notificationMessage: 'Signed in! Now, use the Walangeri app\'s reporting functionality' } });
           } catch(exception) {
             console.log(exception)
+            setErrorMessage("Error! Username or password is incorrect!")
+            setTimeout(() => setErrorMessage(''), 5000)
           }
-          navigate('/', { state: { notificationMessage: 'Signed in! Now, use the Walangeri app\'s reporting functionality' } });
         },
     });
 
     return (
         <View style={signInStyle.container}>
             <Text style={signInStyle.heading}>Sign into the Walangeri app</Text>
-
+            <Notification message={errorMessage}/>
             <TextInput
                 style={[signInStyle.input, formik.touched.username && formik.errors.username ? signInStyle.inputError : null]}
                 placeholder="Email"

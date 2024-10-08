@@ -12,6 +12,13 @@ const notificationStyle = StyleSheet.create({
         color: 'white',
         fontWeight: 'bold',
     },
+    errorContainer: {
+        backgroundColor: 'red',
+        padding: 10,
+        borderRadius: 5,
+        marginBottom: 15,
+        alignItems: 'center',
+    }
 });
 
 export default notificationStyle

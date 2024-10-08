@@ -45,6 +45,7 @@ const Report = ({ report, reports, setReports }) => {
             <Text>Job Type: {report.jobType}</Text>
             <Text>Urgency Level: {report.urgencyLevel}</Text>
             <Text>Notes: {report.notes}</Text>
+            <Text>Created by: {report.user.name}</Text>
             <Button title="Edit" onPress={handleEdit} />
             <Button title="Delete" onPress={handleDelete} color="red" />
         </View>

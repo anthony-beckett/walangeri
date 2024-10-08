@@ -1,5 +1,3 @@
-// src/components/Register.jsx
-
 import { View, TextInput, Pressable, Text } from 'react-native';
 import * as yup from 'yup';
 import signInStyle from '../styles/signInStyle';
@@ -7,7 +5,6 @@ import { useFormik } from 'formik';
 import { useNavigate } from 'react-router-native';
 import React, { useState } from 'react';
 import userService from '../services/users';
-import Notification from './Notification';
 
 const validationSchema = yup.object().shape({
     email: yup.string().email('Invalid email address').required('Email is required'),

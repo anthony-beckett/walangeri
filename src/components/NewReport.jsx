@@ -8,6 +8,7 @@ import Footer from './Footer';
 import Notification from './Notification';
 import { useLocation } from 'react-router-native';
 import reportService from '../services/reports'
+import {Camera, useCameraDevice, useCameraPermission} from "react-native-vision-camera";
 
 const validationSchema = yup.object().shape({
     reportName: yup
@@ -27,6 +28,8 @@ const validationSchema = yup.object().shape({
 const NewReport = ({ reports, setReports }) => {
     const location = useLocation();
     const [notificationMessage, setNotificationMessage] = useState('');
+    const { hasPermission, requestPermission } = useCameraPermission()
+    const device = useCameraDevice('back')
 
     useEffect(() => {
         if (location.state && location.state.notificationMessage) {
@@ -72,11 +75,19 @@ const NewReport = ({ reports, setReports }) => {
 
     return (
         <View style={newReportStyles.container}>
-            <Notification message={notificationMessage} />
+            <Notification message={notificationMessage}/>
 
             <Text style={newReportStyles.heading}>Report a New Fault</Text>
 
-            <TextInput 
+            <uses-permission name="android.permission.CAMERA"/>
+            {
+            // <Camera
+            //     style={StyleSheet.absoluteFill}
+            //     device={device}
+            //     isActive={true}
+            // />
+            }
+            <TextInput
                 style={[newReportStyles.input, formik.touched.reportName && formik.errors.reportName ? newReportStyles.inputError : null]}
                 placeholder="Report Name"
                 onChangeText={formik.handleChange('reportName')}
@@ -87,7 +98,7 @@ const NewReport = ({ reports, setReports }) => {
                 <Text style={newReportStyles.errorText}>{formik.errors.reportName}</Text>
             )}
 
-            <TextInput 
+            <TextInput
                 style={[newReportStyles.input, formik.touched.addressLot && formik.errors.addressLot ? newReportStyles.inputError : null]}
                 placeholder="Address/Lot"
                 onChangeText={formik.handleChange('addressLot')}
@@ -102,12 +113,12 @@ const NewReport = ({ reports, setReports }) => {
                 onValueChange={value => formik.setFieldValue('jobType', value)}
                 value={formik.values.jobType}
                 items={[
-                    { label: 'Carpentry', value: 'Carpentry' },
-                    { label: 'Electrician', value: 'Electrician' },
-                    { label: 'Plumbing', value: 'Plumbing' },
+                    {label: 'Carpentry', value: 'Carpentry'},
+                    {label: 'Electrician', value: 'Electrician'},
+                    {label: 'Plumbing', value: 'Plumbing'},
                 ]}
                 style={pickerSelectStyles}
-                placeholder={{ label: "Select Job Type", value: null }}
+                placeholder={{label: "Select Job Type", value: null}}
             />
             {formik.touched.jobType && formik.errors.jobType && (
                 <Text style={newReportStyles.errorText}>{formik.errors.jobType}</Text>
@@ -117,12 +128,12 @@ const NewReport = ({ reports, setReports }) => {
                 onValueChange={value => formik.setFieldValue('urgencyLevel', value)}
                 value={formik.values.urgencyLevel}
                 items={[
-                    { label: 'Low', value: 'Low' },
-                    { label: 'Medium', value: 'Medium' },
-                    { label: 'High', value: 'High' },
+                    {label: 'Low', value: 'Low'},
+                    {label: 'Medium', value: 'Medium'},
+                    {label: 'High', value: 'High'},
                 ]}
                 style={pickerSelectStyles}
-                placeholder={{ label: "Select Urgency Level", value: null }}
+                placeholder={{label: "Select Urgency Level", value: null}}
             />
             {formik.touched.urgencyLevel && formik.errors.urgencyLevel && (
                 <Text style={newReportStyles.errorText}>{formik.errors.urgencyLevel}</Text>
@@ -141,7 +152,7 @@ const NewReport = ({ reports, setReports }) => {
                 <Text style={newReportStyles.buttonText}>Submit</Text>
             </Pressable>
 
-            <Footer />
+            <Footer/>
         </View>
     );
 };

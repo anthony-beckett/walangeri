@@ -2,13 +2,16 @@ import * as yup from 'yup';
 import React, { useState, useEffect } from 'react';
 import { useFormik } from 'formik';
 import { newReportStyles, pickerSelectStyles } from '../styles/newReportStyles';
-import { View, TextInput, Pressable, Text } from 'react-native';
+import {View, TextInput, StyleSheet, Pressable, Text, Button, TouchableOpacity} from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import Footer from './Footer';
 import Notification from './Notification';
 import { useLocation } from 'react-router-native';
 import reportService from '../services/reports'
-import {Camera, useCameraDevice, useCameraPermission} from "react-native-vision-camera";
+import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
+import * as ImagePicker from 'expo-image-picker';
+import {string} from "yup";
+import { Image } from 'expo-image';
 
 const validationSchema = yup.object().shape({
     reportName: yup
@@ -28,8 +31,28 @@ const validationSchema = yup.object().shape({
 const NewReport = ({ reports, setReports }) => {
     const location = useLocation();
     const [notificationMessage, setNotificationMessage] = useState('');
-    const { hasPermission, requestPermission } = useCameraPermission()
-    const device = useCameraDevice('back')
+    const [image, setImage] = useState(null);
+    const [cameraPermission, requestCameraPermission] = ImagePicker.useCameraPermissions();
+    const [cameraRollPermission, requestCameraRollPermission] = ImagePicker.useMediaLibraryPermissions();
+
+
+
+    const pickImage = async () => {
+        // No permissions request is necessary for launching the image library
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+        });
+
+        console.log(result);
+
+        if (!result.canceled) {
+            setImage(result.assets[0].uri);
+        }
+    };
+
 
     useEffect(() => {
         if (location.state && location.state.notificationMessage) {
@@ -73,20 +96,44 @@ const NewReport = ({ reports, setReports }) => {
         },
     });
 
+    if (!cameraRollPermission || !cameraPermission) {
+        // Camera permissions are still loading.
+        return <View />;
+    }
+
+    if (!cameraRollPermission.granted) {
+        const requestCameraPermissions = () => {
+            requestCameraRollPermission();
+            requestCameraPermission();
+        }
+        // Camera permissions are not granted yet.
+        return (
+            <View >
+                <Text>We need your permission to show the camera</Text>
+                <Button onPress={requestCameraPermissions} title="grant permission" />
+            </View>
+        );
+    }
+
     return (
         <View style={newReportStyles.container}>
             <Notification message={notificationMessage}/>
 
             <Text style={newReportStyles.heading}>Report a New Fault</Text>
 
-            <uses-permission name="android.permission.CAMERA"/>
-            {
-            // <Camera
-            //     style={StyleSheet.absoluteFill}
-            //     device={device}
-            //     isActive={true}
-            // />
-            }
+            {/*<CameraView*/}
+            {/*    style={absoluteFillObject}*/}
+            {/*    facing={'back'} isActive={true}>*/}
+            {/*    <View>*/}
+            {/*        <TouchableOpacity onPress={toggleCameraFacing}>*/}
+            {/*            <Text>Flip Camera</Text>*/}
+            {/*        </TouchableOpacity>*/}
+            {/*    </View>*/}
+            {/*</CameraView>*/}
+
+            <Button title="Pick an image from camera roll" onPress={pickImage} />
+            {image && <Image source={{ uri: image }} />}
+
             <TextInput
                 style={[newReportStyles.input, formik.touched.reportName && formik.errors.reportName ? newReportStyles.inputError : null]}
                 placeholder="Report Name"

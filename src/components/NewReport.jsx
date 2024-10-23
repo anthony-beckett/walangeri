@@ -32,7 +32,6 @@ const NewReport = ({ reports, setReports }) => {
     const location = useLocation();
     const [notificationMessage, setNotificationMessage] = useState('');
     const [image, setImage] = useState(null);
-    const [cameraPermission, requestCameraPermission] = ImagePicker.useCameraPermissions();
     const [cameraRollPermission, requestCameraRollPermission] = ImagePicker.useMediaLibraryPermissions();
 
 
@@ -42,8 +41,9 @@ const NewReport = ({ reports, setReports }) => {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
-            aspect: [4, 3],
             quality: 1,
+            base64: true,
+            // allowsMultipleSelection: true,
         });
 
         console.log(result);
@@ -96,7 +96,7 @@ const NewReport = ({ reports, setReports }) => {
         },
     });
 
-    if (!cameraRollPermission || !cameraPermission) {
+    if (!cameraRollPermission) {
         // Camera permissions are still loading.
         return <View />;
     }
@@ -104,7 +104,6 @@ const NewReport = ({ reports, setReports }) => {
     if (!cameraRollPermission.granted) {
         const requestCameraPermissions = () => {
             requestCameraRollPermission();
-            requestCameraPermission();
         }
         // Camera permissions are not granted yet.
         return (
@@ -114,6 +113,10 @@ const NewReport = ({ reports, setReports }) => {
             </View>
         );
     }
+
+    const blurhash =
+        '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
+
 
     return (
         <View style={newReportStyles.container}>
@@ -131,8 +134,27 @@ const NewReport = ({ reports, setReports }) => {
             {/*    </View>*/}
             {/*</CameraView>*/}
 
-            <Button title="Pick an image from camera roll" onPress={pickImage} />
-            {image && <Image source={{ uri: image }} />}
+            <Image
+                source={image}
+                placeholder={{ blurhash }}
+                style={{
+                    width: 200,
+                    height: 200,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}
+                contentFit="cover"
+                transition={1000}
+            />
+            <Pressable style={newReportStyles.button}
+                    onPress={pickImage}>
+                <Text style={newReportStyles.buttonText}>Pick an image from camera roll</Text>
+            </Pressable>
+            {image && (
+                <Pressable onPress={() => setImage(null)}>
+                    <Text>❌</Text>
+                </Pressable>
+            )}
 
             <TextInput
                 style={[newReportStyles.input, formik.touched.reportName && formik.errors.reportName ? newReportStyles.inputError : null]}

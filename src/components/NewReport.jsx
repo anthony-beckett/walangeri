@@ -8,7 +8,6 @@ import Footer from './Footer';
 import Notification from './Notification';
 import { useLocation } from 'react-router-native';
 import reportService from '../services/reports'
-import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import * as ImagePicker from 'expo-image-picker';
 import {string} from "yup";
 import { Image } from 'expo-image';
@@ -32,29 +31,55 @@ const NewReport = ({ reports, setReports }) => {
     const location = useLocation();
     const [notificationMessage, setNotificationMessage] = useState('');
     const [image, setImage] = useState(null);
-    const [cameraRollPermission, requestCameraRollPermission] = ImagePicker.useMediaLibraryPermissions();
-
-
+    const imageOptions = {
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: false,
+        quality: 1,
+        base64: true,
+    };
 
     const pickImage = async () => {
-        // No permissions request is necessary for launching the image library
-        let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            allowsEditing: true,
-            quality: 1,
-            base64: true,
-            // allowsMultipleSelection: true,
-        });
+        const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+        if (!permission.granted) {
+            alert("You've refused to allow this app to access your camera roll!");
+            return;
+        }
+
+        let result
+            = await ImagePicker.launchImageLibraryAsync(imageOptions);
 
         console.log(result);
 
         if (!result.canceled) {
-            setImage(result.assets[0].uri);
+            setImage(result.assets[0]);
+            console.log(result.assets[0]);
         }
     };
 
+    const openCamera = async () => {
+        // Ask the user for the permission to access the camera
+        const permission = await ImagePicker.requestCameraPermissionsAsync();
 
-    useEffect(() => {
+        if (!permission.granted) {
+            alert("You've refused to allow this app to access your camera!");
+            return;
+        }
+
+        const result
+            = await ImagePicker.launchCameraAsync(imageOptions);
+
+        // Explore the result
+        console.log(result);
+
+        if (!result.cancelled) {
+            setImage(result.assets[0]);
+            console.log("Result:", result);
+        }
+    }
+
+
+        useEffect(() => {
         if (location.state && location.state.notificationMessage) {
             setNotificationMessage(location.state.notificationMessage)
             setTimeout(() => setNotificationMessage(''), 5000)
@@ -96,23 +121,23 @@ const NewReport = ({ reports, setReports }) => {
         },
     });
 
-    if (!cameraRollPermission) {
-        // Camera permissions are still loading.
-        return <View />;
-    }
-
-    if (!cameraRollPermission.granted) {
-        const requestCameraPermissions = () => {
-            requestCameraRollPermission();
-        }
-        // Camera permissions are not granted yet.
-        return (
-            <View >
-                <Text>We need your permission to show the camera</Text>
-                <Button onPress={requestCameraPermissions} title="grant permission" />
-            </View>
-        );
-    }
+    // if (!cameraRollPermission) {
+    //     // Camera permissions are still loading.
+    //     return <View />;
+    // }
+    //
+    // if (!cameraRollPermission.granted) {
+    //     const requestCameraPermissions = () => {
+    //         requestCameraRollPermission();
+    //     }
+    //     // Camera permissions are not granted yet.
+    //     return (
+    //         <View >
+    //             <Text>We need your permission to show the camera</Text>
+    //             <Button onPress={requestCameraPermissions} title="grant permission" />
+    //         </View>
+    //     );
+    // }
 
     const blurhash =
         '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
@@ -123,16 +148,6 @@ const NewReport = ({ reports, setReports }) => {
             <Notification message={notificationMessage}/>
 
             <Text style={newReportStyles.heading}>Report a New Fault</Text>
-
-            {/*<CameraView*/}
-            {/*    style={absoluteFillObject}*/}
-            {/*    facing={'back'} isActive={true}>*/}
-            {/*    <View>*/}
-            {/*        <TouchableOpacity onPress={toggleCameraFacing}>*/}
-            {/*            <Text>Flip Camera</Text>*/}
-            {/*        </TouchableOpacity>*/}
-            {/*    </View>*/}
-            {/*</CameraView>*/}
 
             <Image
                 source={image}
@@ -148,13 +163,18 @@ const NewReport = ({ reports, setReports }) => {
             />
             <Pressable style={newReportStyles.button}
                     onPress={pickImage}>
-                <Text style={newReportStyles.buttonText}>Pick an image from camera roll</Text>
+                <Text style={newReportStyles.buttonText}>🖼️</Text>
             </Pressable>
             {image && (
                 <Pressable onPress={() => setImage(null)}>
                     <Text>❌</Text>
                 </Pressable>
             )}
+
+            <Pressable style={newReportStyles.button}
+                       onPress={openCamera}>
+                <Text style={newReportStyles.buttonText}>📷</Text>
+            </Pressable>
 
             <TextInput
                 style={[newReportStyles.input, formik.touched.reportName && formik.errors.reportName ? newReportStyles.inputError : null]}

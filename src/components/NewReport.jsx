@@ -30,16 +30,18 @@ const validationSchema = yup.object().shape({
 const NewReport = ({ reports, setReports }) => {
     const location = useLocation();
     const [notificationMessage, setNotificationMessage] = useState('');
-    const [image, setImage] = useState(null);
     const imageOptions = {
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: false,
         quality: 1,
         base64: true,
     };
+    const blurhash
+        = '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
-    const pickImage = async () => {
-        const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    const openCameraRoll = async () => {
+        const permission
+            = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
         if (!permission.granted) {
             alert("You've refused to allow this app to access your camera roll!");
@@ -52,14 +54,15 @@ const NewReport = ({ reports, setReports }) => {
         console.log(result);
 
         if (!result.canceled) {
-            setImage(result.assets[0]);
+            formik.setFieldValue('image', result.assets[0]);
             console.log(result.assets[0]);
         }
     };
 
     const openCamera = async () => {
         // Ask the user for the permission to access the camera
-        const permission = await ImagePicker.requestCameraPermissionsAsync();
+        const permission
+            = await ImagePicker.requestCameraPermissionsAsync();
 
         if (!permission.granted) {
             alert("You've refused to allow this app to access your camera!");
@@ -73,11 +76,10 @@ const NewReport = ({ reports, setReports }) => {
         console.log(result);
 
         if (!result.cancelled) {
-            setImage(result.assets[0]);
+            formik.setFieldValue('image', result.assets[0]);
             console.log("Result:", result);
         }
     }
-
 
         useEffect(() => {
         if (location.state && location.state.notificationMessage) {
@@ -88,6 +90,7 @@ const NewReport = ({ reports, setReports }) => {
 
     const formik = useFormik({
         initialValues: {
+          image: null,
           reportName: '',
           addressLot: '',
           jobType: '',
@@ -99,6 +102,7 @@ const NewReport = ({ reports, setReports }) => {
           console.log(values);
           const reportObject = {
             id: String(reports.length + 1),
+            image: values.image,
             reportName: values.reportName,
             addressLot: values.addressLot,
             jobType: values.jobType,
@@ -121,28 +125,6 @@ const NewReport = ({ reports, setReports }) => {
         },
     });
 
-    // if (!cameraRollPermission) {
-    //     // Camera permissions are still loading.
-    //     return <View />;
-    // }
-    //
-    // if (!cameraRollPermission.granted) {
-    //     const requestCameraPermissions = () => {
-    //         requestCameraRollPermission();
-    //     }
-    //     // Camera permissions are not granted yet.
-    //     return (
-    //         <View >
-    //             <Text>We need your permission to show the camera</Text>
-    //             <Button onPress={requestCameraPermissions} title="grant permission" />
-    //         </View>
-    //     );
-    // }
-
-    const blurhash =
-        '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
-
-
     return (
         <View style={newReportStyles.container}>
             <Notification message={notificationMessage}/>
@@ -150,8 +132,8 @@ const NewReport = ({ reports, setReports }) => {
             <Text style={newReportStyles.heading}>Report a New Fault</Text>
 
             <Image
-                source={image}
-                placeholder={{ blurhash }}
+                source={formik.values.image}
+                placeholder={{blurhash}}
                 style={{
                     width: 200,
                     height: 200,
@@ -162,11 +144,13 @@ const NewReport = ({ reports, setReports }) => {
                 transition={1000}
             />
             <Pressable style={newReportStyles.button}
-                    onPress={pickImage}>
+                    onPress={() => openCameraRoll()}>
                 <Text style={newReportStyles.buttonText}>🖼️</Text>
             </Pressable>
-            {image && (
-                <Pressable onPress={() => setImage(null)}>
+            {formik.values.image && (
+                <Pressable onPress={() => {
+                    formik.setFieldValue('image', null)
+                }}>
                     <Text>❌</Text>
                 </Pressable>
             )}

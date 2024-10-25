@@ -2,7 +2,7 @@ import * as yup from 'yup';
 import React, { useState, useEffect } from 'react';
 import { useFormik } from 'formik';
 import { newReportStyles, pickerSelectStyles } from '../styles/newReportStyles';
-import {View, TextInput, StyleSheet, Pressable, Text, Button, TouchableOpacity} from 'react-native';
+import {View, TextInput, StyleSheet, Pressable, Text, Button, TouchableOpacity, ScrollView} from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import Footer from './Footer';
 import Notification from './Notification';
@@ -126,7 +126,7 @@ const NewReport = ({ reports, setReports }) => {
     });
 
     return (
-        <View style={newReportStyles.container}>
+        <ScrollView style={newReportStyles.container}>
             <Notification message={notificationMessage}/>
 
             <Text style={newReportStyles.heading}>Report a New Fault</Text>
@@ -226,7 +226,7 @@ const NewReport = ({ reports, setReports }) => {
             </Pressable>
 
             <Footer/>
-        </View>
+        </ScrollView>
     );
 };
 

@@ -131,29 +131,42 @@ const NewReport = ({ reports, setReports }) => {
 
             <Text style={newReportStyles.heading}>Report a New Fault</Text>
 
-            <Image
-                source={formik.values.image}
-                placeholder={{blurhash}}
-                style={{
-                    width: 200,
-                    height: 200,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                }}
-                contentFit="cover"
-                transition={1000}
-            />
+            <View>
+                <Image
+                    source={formik.values.image}
+                    placeholder={blurhash}
+                    style={{
+                        width: 200,
+                        height: 200,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }}
+                    contentFit="cover"
+                    transition={1000}
+                />
+                {formik.values.image && (
+                    <TouchableOpacity onPress={() => {
+                        formik.setFieldValue('image', null)
+                    }}
+                        style={{
+                            position: 'absolute',
+                            top: 10,
+                            right: 10,
+                            // Semi-transparent background
+                            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                            borderRadius: 50,
+                            padding: 10,
+                        }}
+                    >
+                        <Text>❌</Text>
+                    </TouchableOpacity>
+                )}
+            </View>
             <Pressable style={newReportStyles.button}
                     onPress={() => openCameraRoll()}>
                 <Text style={newReportStyles.buttonText}>🖼️</Text>
             </Pressable>
-            {formik.values.image && (
-                <Pressable onPress={() => {
-                    formik.setFieldValue('image', null)
-                }}>
-                    <Text>❌</Text>
-                </Pressable>
-            )}
+
 
             <Pressable style={newReportStyles.button}
                        onPress={openCamera}>

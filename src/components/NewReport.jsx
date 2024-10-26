@@ -2,7 +2,7 @@ import * as yup from 'yup';
 import React, { useState, useEffect } from 'react';
 import { useFormik } from 'formik';
 import { newReportStyles, pickerSelectStyles } from '../styles/newReportStyles';
-import {View, TextInput, StyleSheet, Pressable, Text, Button, TouchableOpacity, ScrollView} from 'react-native';
+import {View, TextInput, StyleSheet, Pressable, Text, Button, TouchableOpacity, ScrollView, Modal} from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import Footer from './Footer';
 import Notification from './Notification';
@@ -30,6 +30,7 @@ const validationSchema = yup.object().shape({
 const NewReport = ({ reports, setReports }) => {
     const location = useLocation();
     const [notificationMessage, setNotificationMessage] = useState('');
+    const [showFullScreen, setShowFullScreen] = useState(false);
     const imageOptions = {
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: false,
@@ -134,7 +135,7 @@ const NewReport = ({ reports, setReports }) => {
             <View>
                 <Image
                     source={formik.values.image}
-                    placeholder={blurhash}
+                    placeholder={{blurhash}}
                     style={{
                         width: 200,
                         height: 200,
@@ -145,25 +146,74 @@ const NewReport = ({ reports, setReports }) => {
                     transition={1000}
                 />
                 {formik.values.image && (
-                    <TouchableOpacity onPress={() => {
-                        formik.setFieldValue('image', null)
-                    }}
-                        style={{
-                            position: 'absolute',
-                            top: 10,
-                            right: 10,
-                            // Semi-transparent background
-                            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                            borderRadius: 50,
-                            padding: 10,
+                    <>
+                        <TouchableOpacity onPress={() => {
+                            console.log("Image deleted");
+                            formik.setFieldValue('image', null);
                         }}
+                                          style={{
+                                              position: 'absolute',
+                                              top: 10,
+                                              right: 10,
+                                              // Semi-transparent background
+                                              backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                                              borderRadius: 50,
+                                              padding: 10,
+                                          }}
+                        >
+                            <Text>❌</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity onPress={() => {
+                            console.log("Image Pressed");
+                            setShowFullScreen(true);
+                        }}
+                                          style={{
+                                              position: 'absolute',
+                                              width: 200,
+                                              height: 200,
+                                              justifyContent: 'center',
+                                              alignItems: 'center',
+                                          }}
+                        >
+                        </TouchableOpacity>
+                    </>
+                )}
+            </View>
+
+            <Modal
+            presentationStyle={"overFullScreen"}
+            visible={showFullScreen}>
+                <View style={newReportStyles.container}>
+                    <Image
+                        source={formik.values.image}
+                        contentFit="contain"
+                        style={{ flex: 1 }}
+                        >
+
+                    </Image>
+                    <TouchableOpacity onPress={() => {
+                        console.log("Image deleted");
+                        setShowFullScreen(false);
+                    }}
+                                      style={{
+                                          position: 'absolute',
+                                          top: 10,
+                                          right: 10,
+                                          // Semi-transparent background
+                                          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                                          borderRadius: 50,
+                                          padding: 10,
+                                      }}
                     >
                         <Text>❌</Text>
                     </TouchableOpacity>
-                )}
-            </View>
+                </View>
+
+            </Modal>
+
             <Pressable style={newReportStyles.button}
-                    onPress={() => openCameraRoll()}>
+                       onPress={() => openCameraRoll()}>
                 <Text style={newReportStyles.buttonText}>🖼️</Text>
             </Pressable>
 

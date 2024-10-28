@@ -132,21 +132,40 @@ const NewReport = ({ reports, setReports }) => {
 
             <Text style={newReportStyles.heading}>Report a New Fault</Text>
 
-            <View>
+            <View style={{
+                width: 200,
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+            }}>
                 <Image
                     source={formik.values.image}
                     placeholder={{blurhash}}
                     style={{
                         width: 200,
                         height: 200,
-                        justifyContent: 'center',
-                        alignItems: 'center',
+                        alignSelf:'center',
                     }}
                     contentFit="cover"
-                    transition={1000}
+                    transition={100}
                 />
                 {formik.values.image && (
                     <>
+
+                        <TouchableOpacity onPress={() => {
+                            console.log("Image Pressed");
+                            setShowFullScreen(true);
+                        }}
+                                          style={{
+                                              position: 'absolute',
+                                              width: 200,
+                                              height: 200,
+                                              justifyContent: 'center',
+                                              alignItems: 'center',
+                                          }}
+                        >
+                        </TouchableOpacity>
+
                         <TouchableOpacity onPress={() => {
                             console.log("Image deleted");
                             formik.setFieldValue('image', null);
@@ -162,20 +181,6 @@ const NewReport = ({ reports, setReports }) => {
                                           }}
                         >
                             <Text>❌</Text>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity onPress={() => {
-                            console.log("Image Pressed");
-                            setShowFullScreen(true);
-                        }}
-                                          style={{
-                                              position: 'absolute',
-                                              width: 200,
-                                              height: 200,
-                                              justifyContent: 'center',
-                                              alignItems: 'center',
-                                          }}
-                        >
                         </TouchableOpacity>
                     </>
                 )}

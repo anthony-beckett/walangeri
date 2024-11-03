@@ -9,18 +9,16 @@
  * - setReports (function): Function to update the reports state after deletion.
  */
 
-import { View, Text, Button, Alert } from 'react-native';
+import {View, Text, Button, Alert, Modal, TouchableOpacity} from 'react-native';
 import allReportsStyle from '../styles/allReportsStyle';
 import { useNavigate } from 'react-router-native'
 import reportService from '../services/reports'
 import {Image} from "expo-image";
-import {newReportStyles} from "../styles/newReportStyles";
 import React, {useState} from "react";
 
 const Report = ({ report, reports, setReports }) => {
     const navigate = useNavigate()
     const [showFullScreen, setShowFullScreen] = useState(false);
-
 
      /**
       * Navigates to the EditReport screen, passing the current report's data.
@@ -64,7 +62,8 @@ const Report = ({ report, reports, setReports }) => {
         <View style={allReportsStyle.reportContainer}>
             <Text style={allReportsStyle.reportName}>{report.reportName}</Text>
             {report.image && (
-                <TouchableOpacity onPress={() => setShowFullScreen(true)}>
+                <TouchableOpacity onPress={() => setShowFullScreen(true)}
+                style={{width: 100, height: 100}}>
                     <Image source={{ uri: `data:image/jpeg;base64,${report.image}` }}
                        contentFit={'contain'}
                        style={{
@@ -84,7 +83,7 @@ const Report = ({ report, reports, setReports }) => {
             <Modal
                 presentationStyle={"overFullScreen"}
                 visible={showFullScreen}>
-                <View style={newReportStyles.container}>
+                <View style={{width:'100%', height:'100%'}}>
                     <Image
                         source={{ uri: `data:image/jpeg;base64,${report.image}` }}
                         contentFit="contain"

@@ -10,13 +10,16 @@
  */
 
 import React from 'react';
-import { View, TextInput, Pressable, Text, Button } from 'react-native';
+import {View, TextInput, Pressable, Text, Button, ScrollView, TouchableOpacity} from 'react-native';
 import { useFormik } from 'formik';
 import { editReportStyles } from '../styles/editReportStyles';
 import RNPickerSelect from 'react-native-picker-select';
 import { useLocation, useNavigate } from 'react-router-native';
 import * as yup from 'yup';
 import reportService from '../services/reports'
+import {Image} from "expo-image";
+import {newReportStyles} from "../styles/newReportStyles";
+import * as ImagePicker from "expo-image-picker";
 
 // Yup validation schema for form validation (https://www.npmjs.com/package/yup/v/1.0.0-alpha.3)
 const validationSchema = yup.object().shape({
@@ -26,13 +29,70 @@ const validationSchema = yup.object().shape({
     urgencyLevel: yup.string().required('Urgency Level is required'),
 });
 
+
 const EditReport = ({ reports, setReports }) => {
     const location = useLocation();
     const navigate = useNavigate();
     const { report } = location.state;
+    // Image picker configuration
+    const imageOptions = {
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: false,
+        quality: 0.4,
+        base64: true,
+    };
+
+    /**
+     * Opens the device's photo library to select an image for the report.
+     */
+    const openCameraRoll = async () => {
+        const permission
+            = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+        if (!permission.granted) {
+            alert("You've refused to allow this app to access your camera roll!");
+            return;
+        }
+
+        let result
+            = await ImagePicker.launchImageLibraryAsync(imageOptions);
+
+        //console.log(result);
+
+        if (!result.canceled) {
+            formik.setFieldValue('image', result.assets[0].base64);
+        }
+    };
+
+    /**
+     * Opens the device's camera to capture an image for the report.
+     */
+    const openCamera = async () => {
+        // Ask the user for the permission to access the camera
+        const permission
+            = await ImagePicker.requestCameraPermissionsAsync();
+
+        if (!permission.granted) {
+            alert("You've refused to allow this app to access your camera!");
+            return;
+        }
+
+        const result
+            = await ImagePicker.launchCameraAsync(imageOptions);
+
+        // Explore the result
+        console.log(result);
+
+        if (!result.cancelled) {
+            formik.setFieldValue('image', result.assets[0]);
+            console.log("Result:", result);
+        }
+    }
+
 
     const formik = useFormik({
         initialValues: {
+            image: report.image,
             reportName: report.reportName,
             addressLot: report.addressLot,
             jobType: report.jobType,
@@ -60,8 +120,70 @@ const EditReport = ({ reports, setReports }) => {
     });
 
     return (
-        <View style={editReportStyles.container}>
+        <ScrollView style={editReportStyles.container}>
             <Text style={editReportStyles.heading}>Edit Report</Text>
+
+            {formik.values.image && (<View style={{
+                width: 200,
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+            }}>
+                <Image
+                    source={{uri: `data:image/jpeg;base64,${formik.values.image}`}}
+
+                    style={{
+                        width: 200,
+                        height: 200,
+                        alignSelf: 'center',
+                        margin: 5,
+                    }}
+                    contentFit="cover"
+                />
+
+                <TouchableOpacity onPress={() => {
+                    console.log("Image deleted");
+                    formik.setFieldValue('image', null);
+                }}
+                                  style={{
+                                      position: 'absolute',
+                                      top: 10,
+                                      right: 10,
+                                      // Semi-transparent background
+                                      backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                                      borderRadius: 50,
+                                      padding: 10,
+                                  }}
+                >
+                    <Text>❌</Text>
+                </TouchableOpacity>
+            </View>)}
+
+            <View style={{
+                paddingBottom: 5,
+                flexDirection: 'row',
+            }}>
+                <Pressable style={[
+                    newReportStyles.button,
+                    {
+                        width: "50%",
+                    }
+                ]}
+                           onPress={() => openCameraRoll()}>
+                    <Text style={newReportStyles.buttonText}>🖼️</Text>
+                </Pressable>
+
+
+                <Pressable style={[
+                    newReportStyles.button,
+                    {
+                        width: "50%",
+                    }
+                ]}
+                           onPress={openCamera}>
+                    <Text style={newReportStyles.buttonText}>📷</Text>
+                </Pressable>
+            </View>
 
             <TextInput
                 style={editReportStyles.input}
@@ -129,7 +251,7 @@ const EditReport = ({ reports, setReports }) => {
             </Pressable>
 
             <Button title="Back" onPress={() => navigate('/allreports')} />
-        </View>
+        </ScrollView>
     );
 };
 

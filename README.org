@@ -19,7 +19,7 @@ It does this by essentially presenting a form for users to fill out when reporti
 
 ** How to use
 
-* NOTE: You need the MONGODB_URI link, a PORT variable and a SECRET variable in a .env file in the backend code. You are welcome to create a free MongoDB account and link your own MongoDB database or you can ask the developers for their variables. You also need to change the urls in the services folder on the frontend code to your IP Address (e.g.: http://YOUR_IP_ADDRESS_HERE:3001/api/login)
+*** NOTE: You need the MONGODB_URI link, a PORT variable and a SECRET variable in a .env file in the backend code. You are welcome to create a free MongoDB account and link your own MongoDB database or you can ask the developers for their variables. You also need to change the urls in the services folder on the frontend code to your IP Address (e.g.: http://YOUR_IP_ADDRESS_HERE:3001/api/login)
 
 1. First, please clone the backend code at [[https://github.com/aakarshsingh1217/Walangeri-Backend]]
 2. Then, clone this frontend code

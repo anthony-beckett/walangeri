@@ -1,3 +1,14 @@
+/**
+ * Main Component
+ *
+ * Root component of the app after user authentication. It renders the AppBar and Routes for different screens.
+ *
+ * Props:
+ * - reports (array): List of maintenance reports.
+ * - setReports (function): Function to update the reports state.
+ * - handleLogout (function): Function to handle user logout.
+ */
+
 import { View } from 'react-native';
 import { useState } from 'react';
 import { Route, Routes, Navigate } from 'react-router-native';

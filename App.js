@@ -1,4 +1,9 @@
-// App.js
+/**
+ * App.js
+ *
+ * Main entry point of the application. Manages user authentication state and routing.
+ * It checks for a stored user in AsyncStorage on component mount, allowing persistent login sessions.
+ */
 
 import React, { useState, useEffect } from 'react';
 import { NativeRouter, Routes, Route, Navigate } from 'react-router-native';
@@ -10,22 +15,25 @@ import reportService from './src/services/reports';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const App = () => {
+  // State to store reports and the authenticated user
   const [reports, setReports] = useState([]);
   const [user, setUser] = useState(null);
 
   useEffect(() => {
+    // Fetch stored user data on mount to retain login status
     const fetchUser = async () => {
       const storedUser = await AsyncStorage.getItem('user');
       if (storedUser) {
         const parsedUser = JSON.parse(storedUser);
         setUser(parsedUser);
-        reportService.setToken(parsedUser.token);
+        reportService.setToken(parsedUser.token); // Set the token for authorized API calls
       }
     };
     fetchUser();
   }, []);
 
   useEffect(() => {
+    // Fetch initial reports if user is authenticated
     if (user) {
       reportService
         .getAll()
@@ -39,6 +47,9 @@ const App = () => {
     }
   }, [user]);
 
+  /**
+   * Logs out the user by clearing the user data from AsyncStorage and state.
+   */
   const handleLogout = async () => {
     try {
       await AsyncStorage.removeItem('user');

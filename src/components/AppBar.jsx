@@ -1,3 +1,12 @@
+/**
+ * AppBar Component
+ *
+ * Renders the app's navigation bar with tabs and a logo. The tabs provide navigation to key sections of the app.
+ *
+ * Props:
+ * - onLogout (function): Function to handle user logout.
+ */
+
 import { View, ScrollView, Image } from 'react-native';
 import appBarStyle from '../styles/appBarStyle';
 import AppBarTab from './AppBarTab';

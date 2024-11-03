@@ -1,4 +1,15 @@
-import {View, Text, Button, Alert, TouchableOpacity, Modal} from 'react-native';
+/**
+ * Report Component
+ *
+ * Displays details of a single report in the list of all reports. Provides options to edit or delete the report.
+ *
+ * Props:
+ * - report (object): The report object with details like report name, address, job type, etc.
+ * - reports (array): List of all reports.
+ * - setReports (function): Function to update the reports state after deletion.
+ */
+
+import { View, Text, Button, Alert } from 'react-native';
 import allReportsStyle from '../styles/allReportsStyle';
 import { useNavigate } from 'react-router-native'
 import reportService from '../services/reports'
@@ -11,10 +22,16 @@ const Report = ({ report, reports, setReports }) => {
     const [showFullScreen, setShowFullScreen] = useState(false);
 
 
+     /**
+      * Navigates to the EditReport screen, passing the current report's data.
+      */
     const handleEdit = () => {
         navigate(`/editreport/${report.id}`, { state: { report } })
     }
 
+    /**
+     * Deletes the report after user confirmation.
+     */
     const handleDelete = () => {
         Alert.alert(
             'Delete Report',

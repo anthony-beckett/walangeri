@@ -1,3 +1,13 @@
+/**
+ * Register Component
+ *
+ * Registration screen for new users. Includes fields for email, username, and password.
+ * Form validation handled with Yup schema validation.
+ * 
+ * Navigation:
+ * - On successful registration, navigates to SignIn page with a success notification.
+ */
+
 import { View, TextInput, Pressable, Text } from 'react-native';
 import * as yup from 'yup';
 import signInStyle from '../styles/signInStyle';

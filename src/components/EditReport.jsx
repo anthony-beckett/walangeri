@@ -1,3 +1,14 @@
+/**
+ * EditReport Component
+ *
+ * Allows the user to edit an existing report's details. Form fields include report name, address, job type, urgency level, and notes.
+ * Form validation is handled using Yup schema validation.
+ *
+ * Props:
+ * - reports (array): List of all maintenance reports.
+ * - setReports (function): Function to update the reports state after editing.
+ */
+
 import React from 'react';
 import { View, TextInput, Pressable, Text, Button } from 'react-native';
 import { useFormik } from 'formik';
@@ -7,6 +18,7 @@ import { useLocation, useNavigate } from 'react-router-native';
 import * as yup from 'yup';
 import reportService from '../services/reports'
 
+// Yup validation schema for form validation (https://www.npmjs.com/package/yup/v/1.0.0-alpha.3)
 const validationSchema = yup.object().shape({
     reportName: yup.string().required('Report name is required'),
     addressLot: yup.string().required('Address/Lot is required'),
@@ -34,6 +46,7 @@ const EditReport = ({ reports, setReports }) => {
                 ...values,
             };
 
+            // Update report in backend and local state
             reportService
                 .update(report.id, updatedReport)
                 .then(returnedReport => {

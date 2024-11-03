@@ -1,3 +1,13 @@
+/**
+ * SignIn Component
+ *
+ * Login screen for existing users. Includes fields for email and password.
+ * On successful login, navigates to the main app screen.
+ * 
+ * Props:
+ * - setUser (function): Function to set the authenticated user in the parent component.
+ */
+
 import { View, TextInput, Pressable, Text } from 'react-native';
 import * as yup from 'yup';
 import signInStyle from '../styles/signInStyle';
@@ -22,6 +32,7 @@ const SignIn = ({ setUser }) => {
     const [notificationMsg, setNotificationMsg] = useState('')
 
     useEffect(() => {
+        // Display success notification from Register component if available
         if (location.state && location.state.notificationMessage) {
             setNotificationMsg(location.state.notificationMessage)
             setTimeout(() => setNotificationMsg(''), 5000)

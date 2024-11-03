@@ -1,3 +1,10 @@
+/**
+ * Footer Component
+ *
+ * Displays the footer with a logo, aligned to the center of the screen. 
+ * Adjusts its width based on screen dimensions.
+ */
+
 import React from 'react';
 import { View, Image, StyleSheet, Dimensions } from 'react-native';
 
@@ -9,7 +16,7 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
   },
   logo: {
-    width: windowWidth * 5,
+    width: windowWidth * 5, // Scales with screen width
     height: 100,
     resizeMode: 'contain'
   },

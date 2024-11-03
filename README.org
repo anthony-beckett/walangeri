@@ -17,6 +17,14 @@ It does this by essentially presenting a form for users to fill out when reporti
 - Urgency of the job
 - Any additional notes
 
+** How to use
+- First, please clone the backend code at [[https://github.com/aakarshsingh1217/Walangeri-Backend]]
+- Then, clone this frontend code
+- Download Android Studio and use the Medium_Phone_API_TiramisuPrivacySandbox and start running the emulator
+- Run an npm install command in the roots of both the frontend and backend code
+- run the 'npm run dev' command in the backend code root
+- run the 'npm start' command in the frontend code root, then enter the character 'a' to have expo build the app and run on the emulator
+
 ** Rights
 
 All rights belong to the Walangeri Ngumpinku Aboriginal Corporation. Permission has been sought and approved for making this repository public, but it remains proprietary software owned by the Walangeri Ngumpinku Aboriginal Corporation. Any use of this software by third-parties must be approved by the aforementioned corporation.
@@ -29,3 +37,4 @@ Anthony Beckett (Project Manager; Software Engineer)
 - LinkedIn: [[https://linkedin.com/in/anthony-beckett]]
 
 Aakarsh Singh (Full-Stack Developer)
+- LinkedIn: [[https://www.linkedin.com/in/aakarshsingh678/]]

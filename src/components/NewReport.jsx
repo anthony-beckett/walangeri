@@ -137,7 +137,6 @@ const NewReport = ({ reports, setReports }) => {
                 flex: 1,
                 justifyContent: 'center',
                 alignItems: 'center',
-                flexDirection: 'row',
             }}>
                 <Image
                     source={formik.values.image}
@@ -175,7 +174,7 @@ const NewReport = ({ reports, setReports }) => {
                                           style={{
                                               position: 'absolute',
                                               top: 10,
-                                              right: 43,
+                                              right: 10,
                                               // Semi-transparent background
                                               backgroundColor: 'rgba(0, 0, 0, 0.5)',
                                               borderRadius: 50,
@@ -187,16 +186,26 @@ const NewReport = ({ reports, setReports }) => {
                     </>
                 )}
                 <View style={{
-                    width: 75,
-                    padding: 5,
+                    paddingBottom: 5,
+                    flexDirection: 'row',
                 }}>
-                    <Pressable style={newReportStyles.button}
+                    <Pressable style={[
+                        newReportStyles.button,
+                        {
+                            width: "50%",
+                        }
+                    ]}
                                onPress={() => openCameraRoll()}>
                         <Text style={newReportStyles.buttonText}>🖼️</Text>
                     </Pressable>
 
 
-                    <Pressable style={newReportStyles.button}
+                    <Pressable style={[
+                        newReportStyles.button,
+                        {
+                            width: "50%",
+                        }
+                    ]}
                                onPress={openCamera}>
                         <Text style={newReportStyles.buttonText}>📷</Text>
                     </Pressable>

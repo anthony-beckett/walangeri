@@ -80,12 +80,9 @@ const EditReport = ({ reports, setReports }) => {
         const result
             = await ImagePicker.launchCameraAsync(imageOptions);
 
-        // Explore the result
-        console.log(result);
 
         if (!result.cancelled) {
-            formik.setFieldValue('image', result.assets[0]);
-            console.log("Result:", result);
+            formik.setFieldValue('image', result.assets[0].base64);
         }
     }
 

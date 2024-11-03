@@ -18,12 +18,12 @@ It does this by essentially presenting a form for users to fill out when reporti
 - Any additional notes
 
 ** How to use
-- First, please clone the backend code at [[https://github.com/aakarshsingh1217/Walangeri-Backend]]
-- Then, clone this frontend code
-- Download Android Studio and use the Medium_Phone_API_TiramisuPrivacySandbox and start running the emulator
-- Run an npm install command in the roots of both the frontend and backend code
-- run the 'npm run dev' command in the backend code root
-- run the 'npm start' command in the frontend code root, then enter the character 'a' to have expo build the app and run on the emulator
+1. First, please clone the backend code at [[https://github.com/aakarshsingh1217/Walangeri-Backend]]
+2. Then, clone this frontend code
+3. Download Android Studio and use the Medium_Phone_API_TiramisuPrivacySandbox and start running the emulator
+4. Run an npm install command in the roots of both the frontend and backend code
+5. run the 'npm run dev' command in the backend code root
+6. run the 'npm start' command in the frontend code root, then enter the character 'a' to have expo build the app and run on the emulator
 
 ** Rights
 

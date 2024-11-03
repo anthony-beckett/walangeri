@@ -1,0 +1,31 @@
+#+TITLE: NT Government Housing Maintenance Recording app for the Walangeri Ngumpinku Aboriginal Corporation
+#+AUTHOR: Anthony Beckett
+#+AUTHOR: Aakarsh Singh
+
+** Description
+
+This is a React Native application designed with Android devices in mind. It was built at the behest of the [[https://walangeri.com.au][Walangeri Ngumpinku Aboriginal Corporation]] for [[https://unisa.edu.au][the University of South Australia's]] (UniSA) ICT Capstone Project.
+
+The Walangeri Corporation approached UniSA in the hope of solving an issue they regularly ran into. Namely, issues with recording and keeping track of housing maintenance tasks. This application seeks to be a solution to this problem.
+
+It does this by essentially presenting a form for users to fill out when reporting faults. The form consists of:
+
+- An image one may attach or take from within the application of the reported fault.
+- A name one may attach for the fault
+- Lot/Address information
+- Type of job (/carpentry, etc/)
+- Urgency of the job
+- Any additional notes
+
+** Rights
+
+All rights belong to the Walangeri Ngumpinku Aboriginal Corporation. Permission has been sought and approved for making this repository public, but it remains proprietary software owned by the Walangeri Ngumpinku Aboriginal Corporation. Any use of this software by third-parties must be approved by the aforementioned corporation.
+
+** Credit
+
+Designed and developed by UniSA students:
+
+Anthony Beckett (Project Manager; Software Engineer)
+- LinkedIn: [[https://linkedin.com/in/anthony-beckett]]
+
+Aakarsh Singh (Full-Stack Developer)

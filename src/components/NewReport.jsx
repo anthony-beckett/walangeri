@@ -1,3 +1,14 @@
+/**
+ * NewReport Component
+ *
+ * Provides a form to create a new maintenance report, with fields for report details such as name, address, job type, urgency level, notes, and an optional image.
+ * Validates form fields using Yup and displays notifications upon submission.
+ * 
+ * Props:
+ * - reports (array): List of all maintenance reports.
+ * - setReports (function): Function to update the reports state after submission.
+ */
+
 import * as yup from 'yup';
 import React, { useState, useEffect } from 'react';
 import { useFormik } from 'formik';
@@ -12,6 +23,7 @@ import * as ImagePicker from 'expo-image-picker';
 import {string} from "yup";
 import { Image } from 'expo-image';
 
+// Yup validation schema for form validation (https://www.npmjs.com/package/yup/v/1.0.0-alpha.3)
 const validationSchema = yup.object().shape({
     reportName: yup
         .string()
@@ -31,6 +43,8 @@ const NewReport = ({ reports, setReports }) => {
     const location = useLocation();
     const [notificationMessage, setNotificationMessage] = useState('');
     const [showFullScreen, setShowFullScreen] = useState(false);
+
+    // Image picker configuration
     const imageOptions = {
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: false,
@@ -40,6 +54,9 @@ const NewReport = ({ reports, setReports }) => {
     const blurhash
         = '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 
+    /**
+     * Opens the device's photo library to select an image for the report.
+     */
     const openCameraRoll = async () => {
         const permission
             = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -60,6 +77,9 @@ const NewReport = ({ reports, setReports }) => {
         }
     };
 
+      /**
+       * Opens the device's camera to capture an image for the report.
+       */
     const openCamera = async () => {
         // Ask the user for the permission to access the camera
         const permission
@@ -89,6 +109,7 @@ const NewReport = ({ reports, setReports }) => {
         }
     }, [location.state]);
 
+    // Initialize Formik for form handling
     const formik = useFormik({
         initialValues: {
           image: null,
@@ -110,6 +131,8 @@ const NewReport = ({ reports, setReports }) => {
             urgencyLevel: values.urgencyLevel,
             notes: values.notes
           }
+
+          // Submit new report to the backend and update local state
           reportService
             .create(reportObject)
             .then(returnedReport => {

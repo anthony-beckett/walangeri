@@ -34,7 +34,7 @@ const NewReport = ({ reports, setReports }) => {
     const imageOptions = {
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: false,
-        quality: 1,
+        quality: 0.4,
         base64: true,
     };
     const blurhash
@@ -220,9 +220,8 @@ const NewReport = ({ reports, setReports }) => {
                         source={formik.values.image}
                         contentFit="contain"
                         style={{ flex: 1 }}
-                        >
+                        />
 
-                    </Image>
                     <TouchableOpacity onPress={() => {
                         console.log("Image deleted");
                         setShowFullScreen(false);

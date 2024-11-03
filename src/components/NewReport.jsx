@@ -103,7 +103,7 @@ const NewReport = ({ reports, setReports }) => {
           console.log(values);
           const reportObject = {
             id: String(reports.length + 1),
-            image: values.image,
+            image: values.image ? values.image.base64 : null,
             reportName: values.reportName,
             addressLot: values.addressLot,
             jobType: values.jobType,

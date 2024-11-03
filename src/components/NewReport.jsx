@@ -137,6 +137,7 @@ const NewReport = ({ reports, setReports }) => {
                 flex: 1,
                 justifyContent: 'center',
                 alignItems: 'center',
+                flexDirection: 'row',
             }}>
                 <Image
                     source={formik.values.image}
@@ -145,6 +146,7 @@ const NewReport = ({ reports, setReports }) => {
                         width: 200,
                         height: 200,
                         alignSelf:'center',
+                        margin: 5,
                     }}
                     contentFit="cover"
                     transition={100}
@@ -173,7 +175,7 @@ const NewReport = ({ reports, setReports }) => {
                                           style={{
                                               position: 'absolute',
                                               top: 10,
-                                              right: 10,
+                                              right: 43,
                                               // Semi-transparent background
                                               backgroundColor: 'rgba(0, 0, 0, 0.5)',
                                               borderRadius: 50,
@@ -184,6 +186,21 @@ const NewReport = ({ reports, setReports }) => {
                         </TouchableOpacity>
                     </>
                 )}
+                <View style={{
+                    width: 75,
+                    padding: 5,
+                }}>
+                    <Pressable style={newReportStyles.button}
+                               onPress={() => openCameraRoll()}>
+                        <Text style={newReportStyles.buttonText}>🖼️</Text>
+                    </Pressable>
+
+
+                    <Pressable style={newReportStyles.button}
+                               onPress={openCamera}>
+                        <Text style={newReportStyles.buttonText}>📷</Text>
+                    </Pressable>
+                </View>
             </View>
 
             <Modal
@@ -216,17 +233,6 @@ const NewReport = ({ reports, setReports }) => {
                 </View>
 
             </Modal>
-
-            <Pressable style={newReportStyles.button}
-                       onPress={() => openCameraRoll()}>
-                <Text style={newReportStyles.buttonText}>🖼️</Text>
-            </Pressable>
-
-
-            <Pressable style={newReportStyles.button}
-                       onPress={openCamera}>
-                <Text style={newReportStyles.buttonText}>📷</Text>
-            </Pressable>
 
             <TextInput
                 style={[newReportStyles.input, formik.touched.reportName && formik.errors.reportName ? newReportStyles.inputError : null]}

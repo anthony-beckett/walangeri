@@ -17,8 +17,6 @@ const AppBar = ({ onLogout }) => {
             <Image source={require('../assets/logo.png')} style={appBarStyle.logo} />
             <ScrollView horizontal style={appBarStyle.scrollView}>
                 <AppBarTab title="New Report" to="/" />
-                <AppBarTab title="Load Report" to="/loadreport" />
-                <AppBarTab title="Export Report" to="/exportreport" />
                 <AppBarTab title="All Reports" to="/allreports" />
                 <AppBarTab title="Log Out" onPress={onLogout} />
             </ScrollView>

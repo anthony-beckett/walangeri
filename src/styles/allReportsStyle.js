@@ -16,6 +16,14 @@ const allReportsStyle = StyleSheet.create({
         fontWeight: 'bold',
         marginBottom: 5,
     },
+    searchInput: {
+        height: 40,
+        borderColor: 'gray',
+        borderWidth: 1,
+        paddingLeft: 8,
+        margin: 15,
+        borderRadius: 5,
+    },
 });
 
-export default allReportsStyle
+export default allReportsStyle;
